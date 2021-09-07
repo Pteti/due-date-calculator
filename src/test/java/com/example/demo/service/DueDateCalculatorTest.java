@@ -34,8 +34,8 @@ public class DueDateCalculatorTest {
     }
 
     @Test
-    public void submit_off_hours_is_prohibited() {
-        var dateTime = LocalDateTime.parse("2021-09-06T06:30:00");
+    public void submit_off_hours_in_the_morning_is_prohibited() {
+        var dateTime = LocalDateTime.parse("2021-09-06T08:59:59");
         var turnaroundTime = 1;
 
         Exception exception = assertThrows(InvalidSubmitTimeException.class,
@@ -45,7 +45,20 @@ public class DueDateCalculatorTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
+    }
 
+    @Test
+    public void submit_off_hours_in_the_afternoon_is_prohibited() {
+        var dateTime = LocalDateTime.parse("2021-09-06T17:00:01");
+        var turnaroundTime = 1;
+
+        Exception exception = assertThrows(InvalidSubmitTimeException.class,
+                () -> underTest.calculateDueDate(dateTime,turnaroundTime));
+
+        String expectedMessage = "Submit of an issue is prohibited off hours!";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -72,9 +85,9 @@ public class DueDateCalculatorTest {
 
     @Test
     public void submit_on_Monday_5pm_with_17_hours_of_turnaround_is_resolved_on_Thursday_9am() throws InvalidSubmitTimeException {
-        var dateTime = LocalDateTime.parse("2021-08-02T17:00:00");
+        var dateTime = LocalDateTime.parse("2021-08-02T16:59:00");
         var turnaroundTime = 17;
-        var expectedDateTime = LocalDateTime.parse("2021-08-05T09:00:00");
+        var expectedDateTime = LocalDateTime.parse("2021-08-05T09:59:00");
 
         var response = underTest.calculateDueDate(dateTime, turnaroundTime);
 
@@ -85,7 +98,7 @@ public class DueDateCalculatorTest {
     public void submit_on_Monday_3_pm_with_4_hours_turnaround_is_resolved_at_Tuesday_10_am() throws InvalidSubmitTimeException {
         var dateTime = LocalDateTime.parse("2021-08-02T15:00:00");
         var turnaroundTime = 4;
-        var expectedDateTime = LocalDateTime.parse("2021-08-03T10:00:00");
+        var expectedDateTime = LocalDateTime.parse("2021-08-03T11:00:00");
 
         var response = underTest.calculateDueDate(dateTime, turnaroundTime);
 
