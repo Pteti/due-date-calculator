@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DueDateCalculatorTest {
 
+    private static final String WEEKEND_SUBMIT = "Submit of an issue is prohibited on weekends!";
+    private static final String OFF_HOUR_SUBMIT = "Submit of an issue is prohibited off hours!";
+
     private static DueDateCalculator underTest;
 
     @BeforeAll
@@ -25,7 +28,7 @@ public class DueDateCalculatorTest {
         Exception exception = assertThrows(InvalidSubmitTimeException.class,
                 () -> underTest.calculateDueDate(dateTime,turnaroundTime));
 
-        String expectedMessage = "Submit of an issue is prohibited on weekends!";
+        String expectedMessage = WEEKEND_SUBMIT;
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -40,7 +43,7 @@ public class DueDateCalculatorTest {
         Exception exception = assertThrows(InvalidSubmitTimeException.class,
                 () -> underTest.calculateDueDate(dateTime,turnaroundTime));
 
-        String expectedMessage = "Submit of an issue is prohibited on weekends!";
+        String expectedMessage = WEEKEND_SUBMIT;
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -54,7 +57,7 @@ public class DueDateCalculatorTest {
         Exception exception = assertThrows(InvalidSubmitTimeException.class,
                 () -> underTest.calculateDueDate(dateTime,turnaroundTime));
 
-        String expectedMessage = "Submit of an issue is prohibited off hours!";
+        String expectedMessage = OFF_HOUR_SUBMIT;
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -68,7 +71,7 @@ public class DueDateCalculatorTest {
         Exception exception = assertThrows(InvalidSubmitTimeException.class,
                 () -> underTest.calculateDueDate(dateTime,turnaroundTime));
 
-        String expectedMessage = "Submit of an issue is prohibited off hours!";
+        String expectedMessage = OFF_HOUR_SUBMIT;
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
