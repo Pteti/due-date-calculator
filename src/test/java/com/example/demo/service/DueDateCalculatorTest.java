@@ -18,8 +18,7 @@ public class DueDateCalculatorTest {
     }
 
     @Test
-    public void submit_on_weekends_is_prohibited() {
-
+    public void submit_on_sunday_is_prohibited() {
         var dateTime = LocalDateTime.parse("2021-09-05T11:30:00");
         var turnaroundTime = 1;
 
@@ -30,7 +29,21 @@ public class DueDateCalculatorTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
+    }
 
+    @Test
+    public void submit_on_saturday_is_prohibited() {
+
+        var dateTime = LocalDateTime.parse("2021-09-04T11:30:00");
+        var turnaroundTime = 1;
+
+        Exception exception = assertThrows(InvalidSubmitTimeException.class,
+                () -> underTest.calculateDueDate(dateTime,turnaroundTime));
+
+        String expectedMessage = "Submit of an issue is prohibited on weekends!";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
